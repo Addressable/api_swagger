@@ -1,0 +1,928 @@
+openapi: 3.0.0
+info:
+  title: Addressable Custom Notes API
+  description: >-
+    Addressable provides a fully features RESTful API that enables you to send
+    Handwritten Letters and Cards, using any programming language or framework
+    desired. The Addressable Custom Notes API requires an API key for either
+    Sandbox or Production. A Sandbox API key can be obtained by signing up for a
+    free Developer account.
+  version: 1.0.0-oas3
+  
+servers:
+  - url: 'https://api.addressable.app/api/v1'
+    description: >-
+      Root API URL for Production API requests. API requests sent to this root
+      URL will send real mail!
+  - url: 'https://sandbox.addressable.app/api/v1'
+    description: >-
+      Root API URL for Sandbox API requests. API requests sent to this root URL
+      will NOT send mail, and cost nothing to send.
+      
+paths:
+  /custom_notes.json:
+    get:
+      summary: >-
+        Returns a list of the most recent 100 Custom Notes.
+      description: >-
+        This endpoint returns a list of the 100 most recently sent custom
+        note for the entire account, as an array. Each custom note object
+        includes all of the fields that were originally provided, along with
+        a status string.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            Responds with a JSON array of Custom Note Objects. The list of
+            historical custom notes from the entire Addressable account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/custom_notes'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+    post:
+      requestBody:
+        description: >-
+          These are the required values in the JSON body for creating a custom note.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                custom_note:              
+                  $ref: '#/components/schemas/custom_note'
+      summary: >-
+        Sends a hand written custom note to the specified recipient!
+      description: >-
+        Sending a handwritten custom note can be accomplished with a single
+        HTTP Post Request. In general, the minimum information required are
+        four categories.
+        1. Who is the card going to.
+        2. Who is sending the card.
+        3. An image URL for the front of the card
+        4. the text content of the card.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and put the custom note
+            in queue for our robots to write it!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/custom_note'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+                
+  /message_templates.json:
+    get:
+      summary: >-
+        Returns a list of all saved Message Templates.
+      description: >-
+        Each message template is assigned a unique sequential integer as an id, that
+        can be used to retrieve it individually. The message template object is
+        returned with all of the original values originally provided when it was
+        created, along with a status property.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and an array of all
+            saved message templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message_templates'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    post:
+      summary: >-
+        Creates and saves a Message Template
+      description: >-
+        Each message template is assigned a unique sequential integer as an id, that
+        can be used to retrieve it individually. Provding the required fields,
+        will create a message_template and return the values with an id.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      requestBody:
+        description:  >-
+          These are the required values in the JSON body for creating a message template.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                custom_note: 
+                  $ref: '#/components/schemas/message_template'
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and create the message template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/custom_note'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+  /message_templates{id}.json:
+    get:
+      summary: >-
+        Returns an individal Message Template with the id provided in the URL.
+      description: >-
+        This endpoint returns a message template for the provided id.
+        Each message template object includes all of the fields that were
+        originally provided, along with a status string.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The message template id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and an array of all
+            saved message templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                   $ref: '#/components/schemas/message_template'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    put:
+      summary: >-
+          Updates an individal Message Template with the id provided in the URL.
+      description: >-
+        This endpoint updates a message template for the provided id.
+        Each message template object can be edited.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The message template id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will update the specified message template  with a
+            200 status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                    $ref: '#/components/schemas/message_template'
+        '401':
+          description: >-
+              Unauthorized Request. Please be sure to include the two required
+              Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+  /radius_templates.json:
+    get:
+      summary: >-
+        Lists the saved Radius message templates on the account, along with their ids.
+      description: >-
+        Each radius template is assigned a unique sequential integer as an id, that
+        can be used to retrieve it individually. The radius template object is
+        returned with all of the original values originally provided when it was
+        created.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and an array of all
+            saved radius templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/radius_templates'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    post:
+      summary: >-
+        Creates and saves a Radius Template
+      description: >-
+        Each radius template is assigned a unique sequential integer as an id, that
+        can be used to retrieve it individually. Provding the required fields,
+        will create a radius_template and return the values with an id.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      requestBody:
+        description:  >-
+          These are the required values in the JSON body for creating a message template.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                custom_note: 
+                  $ref: '#/components/schemas/radius_template'
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and create the radius template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/radius_template'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+  /radius_templates{id}.json:
+    get:
+      summary: >-
+        Returns an individal Radius Template with the id provided in the URL.
+      description: >-
+        This endpoint returns a radius template for the provided id.
+        Each radius template object includes all of the fields that were
+        originally provided, along with a status string.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The radius template id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and an array of all
+            saved radius templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                   $ref: '#/components/schemas/radius_template'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    put:
+      summary: >-
+          Updates an individal Radius Template with the id provided in the URL.
+      description: >-
+        This endpoint updates a radius template for the provided id.
+        Each radius template object can be edited.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The radius template id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will update the specified radius template  with a
+            200 status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                    $ref: '#/components/schemas/radius_template'
+        '401':
+          description: >-
+              Unauthorized Request. Please be sure to include the two required
+              Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+  /radius_mailings.json:
+    get:
+      summary: >-
+        Returns a list of all Radius mailings for the Addressable account.
+      description: >-
+        This endpoint returns a list of created and sent radius mailings for
+        the entire account, as an array. Each radius mailing object
+        includes all of the fields that were originally provided, along with
+        additional status fields.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            Responds with a JSON array of Radius Mailing Objects. The list of
+            historical custom notes from the entire Addressable account.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  radius_mailings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message_template:
+                          $ref: '#/components/schemas/radius_mailing'
+                        subject_list_entry:
+                          $ref: '#/components/schemas/subject_list_entry'
+
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+    post:
+      requestBody:
+        description: >-
+          These are the required values in the JSON body for creating a radius.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                radius_mailing:              
+                  $ref: '#/components/schemas/radius_mailing'
+                subject_list_entry:
+                  $ref: '#/components/schemas/subject_list_entry'
+      summary: >-
+        Sends a hand written radius mailing to a specified number of recipients!
+      description: >-
+        Sending handwritten custom radius mailings can be accomplished with a single
+        HTTP Post Request. In general, the minimum information required are
+        four categories.
+        1.  Target number of notes to send
+        2. Who is sending the card.
+        3. An image URL for the front of the card
+        4. the text content of the card.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and put the radius
+            mailings in queue for our robots to write it!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/custom_note'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+            
+  /radius_mailings/{id}.json:
+    get:
+      summary: >-
+        Returns an individal Radius Mailing with the id provided in the URL.
+      description: >-
+        This endpoint returns a Radius Mailing for the provided id.
+        Each radius template object includes all of the fields that were
+        originally provided, along with a status fields.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The radius mailing id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and an array of all
+            saved radius mailing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                    $ref: '#/components/schemas/radius_mailing'
+                  subject_list_entry:
+                    $ref: '#/components/schemas/subject_list_entry'
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    put:
+      summary: >-
+          Updates an individal Radius Mailing, if it has not been wrriten and sent yet,
+          with the id provided in the URL.
+      description: >-
+        This endpoint updates a Radius Mailing for the provided id.
+        Each radius template object can be edited.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The Radius Mailing id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will update the specified Radius Mailing  with a
+            200 status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message_template: 
+                    $ref: '#/components/schemas/radius_mailing'
+                  subject_list_entry:
+                    $ref: '#/components/schemas/subject_list_entry'
+        '401':
+          description: >-
+              Unauthorized Request. Please be sure to include the two required
+              Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+                  
+components:
+  securitySchemes:
+    ApiKeyToken:
+      type: apiKey
+      in: header
+      name: X-User-Token
+      description: >-
+        This is your Addressable API Key. You can find it by navigating to your
+        Addressable Dashboard, clicking your name in the upper right,
+        then clicking My Settings. Your API TOken is at the bottom of the Settings page.
+    ApiKeyEmail:
+      type: apiKey
+      in: header
+      name: X-User-Email
+      description: >-
+        This is the email address associated with your  Addressable account.
+        
+  schemas:
+    custom_notes:
+      type: array
+      items:
+        $ref: '#/components/schemas/custom_note'
+        
+    custom_note:
+      type: object
+      required:
+        - id
+        - body
+        - to_first_name
+        - to_last_name
+        - to_address_line_1
+        - to_city
+        - to_state
+        - to_zipcode
+        - from_first_name
+        - from_last_name
+        - from_address_line_1
+        - from_city
+        - from_state
+        - from_zipcode
+        - card_image_url
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            Do not provide in POST requests.
+            Unique, sequential id for the custom note.
+            This id is automatatically assigned, and not a writeable field.
+        body:
+          type: string
+          description: >-
+            The text, with merge variables and line returns, of
+            the content of the custom note.
+            Optionally, body can be the id of a Message Template
+        to_first_name:
+          type: string
+          description: First name of the recipinet
+        to_last_name:
+          type: string
+          description: Last name of the recipient
+        to_business_name:
+          type: string
+          description: >-
+            Name of the recipient's Business.
+            Can also be combined with First and Last name.
+        to_address_line_1:
+          type: string
+          description: >-
+            The first line of the recipient address. Typically a house or
+            building number, combined with a street name.
+        to_address_line_2:
+          type: string
+          description: >-
+            An optional, second line of the recipient address.
+            Often an apartnment or suite specificaiton.
+        to_city:
+          type: string
+          description: The recipient's city.
+        to_state:
+          type: string
+          description: The recipient's state or region.
+        to_zipcode:
+          type: string
+          description: The recipient's USPS 5 digit Zip code.
+        from_first_name:
+          type: string
+          description: First name of the sender
+        from_last_name:
+          type: string
+          description: Last name of the sender
+        from_business_name:
+          type: string
+          description: >-
+            Name of the sender's Business.
+            Can also be combined with First and Last name.
+        from_address_line_1:
+          type: string
+          description: >-
+            The first line of the sender address. Typically a house or
+            building number, combined with a street name.
+        from_address_line_2:
+          type: string
+          description: >-
+            An optional, second line of the sender address.
+            Often an apartnment or suite specificaiton.
+        from_city:
+          type: string
+          description: The recipient's city.
+        from_state:
+          type: string
+          description: The recipient's state or region.
+        from_zipcode:
+          type: string
+          description: The recipient's USPS 5 digit Zip code.
+        card_type:
+          type: string
+          enum:
+            - logo
+            - blank
+            - thank_you
+            - happy_holidays
+            - happy_birthday
+          description: >-
+            You can choose a preset card graphic, from thank_you,
+            happy_birthday, happy_holidays, or blank.
+            Otherwise, select logo card (default), and provide a card_image_url
+        card_image_url:
+          type: string
+          description: >-
+            URL to a JPG or PNG image to print on the front of the card.
+        merge_variables:
+          type: object
+          properties:
+            key:
+              type: string
+              description: >-
+                Dictionary of key, values for merge variables.
+                Every instance of 'key' in the custom_note body, will be
+                replaced with the value defined here.
+          example:
+            introduction: Hello!
+            business_name: Acme, Inc.
+
+    message_templates:
+      type: array
+      items:
+        $ref: '#/components/schemas/message_template'
+        
+    message_template:
+      type: object
+      required:
+        - id
+        - title
+        - body
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            Do not provide in POST requests.
+            Unique, sequential id for the message template.
+            This id is automatatically assigned, and not a writeable field.
+        title:
+          type: string
+          description: >-
+            A reference title for the message template. This title is not
+            written in the body, and used for internal naming.
+        body:
+          type: string
+          description: >-
+            The body content to be used in the custom note.
+            This field can include merge variables.
+
+    radius_templates:
+      type: array
+      items:
+        $ref: '#/components/schemas/radius_template'
+        
+    radius_template:
+      type: object
+      required:
+        - id
+        - title
+        - body
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            Do not provide in POST requests.
+            Unique, sequential id for the radius template.
+            This id is automatatically assigned, and not a writeable field.
+        title:
+          type: string
+          description: >-
+            A reference title for the radius template. This title is not
+            written in the body, and used for internal naming.
+        body:
+          type: string
+          description: >-
+            The body content to be used in the radius custom note.
+            This field can include merge variables.
+    
+    radius_mailings:
+      type: array
+      items:
+        $ref: '#/components/schemas/radius_mailing'
+    radius_mailing:
+      type: object
+      required:
+        - id
+        - name
+        - phone
+        - email
+        - target_drop_date
+        - target_quantity
+        - from_first_name
+        - from_last_name
+        - from_address_line_1
+        - from_city
+        - from_state
+        - from_zipcode
+        - card_type
+        - radius_template_id
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            Do not provide in POST requests.
+            Unique, sequential id for the radius mailing.
+            This id is automatatically assigned, and not a writeable field.
+        name:
+          type: string
+          description: >-
+            This is a reference field for your own internal use.
+        phone:
+          type: string
+          description: >-
+            The sender phone number to use for the radius mailing.
+        email:
+          type: string
+          description: >-
+            The sender email address to use for the radius mailing.
+        target_drop_date:
+          type: string
+          description: >-
+            The requested target mailing date. Set this field to tell us when you would like
+            this raidus mailing to be sent!
+        target_quantity:
+          type: string
+          description: >-
+            The requested quantity of the radius mailing. Use this field to tell us how many
+            raidus mailings you would like to send.
+        from_first_name:
+          type: string
+          description: First name of the sender
+        from_last_name:
+          type: string
+          description: Last name of the sender
+        from_business_name:
+          type: string
+          description: >-
+            Name of the sender's Business.
+            Can also be combined with First and Last name.
+        from_address_line_1:
+          type: string
+          description: >-
+            The first line of the sender address. Typically a house or
+            building number, combined with a street name.
+        from_address_line_2:
+          type: string
+          description: >-
+            An optional, second line of the sender address.
+            Often an apartnment or suite specificaiton.
+        from_city:
+          type: string
+          description: The recipient's city.
+        from_state:
+          type: string
+          description: The recipient's state or region.
+        from_zipcode:
+          type: string
+          description: The recipient's USPS 5 digit Zip code.
+        card_type:
+          type: string
+          enum:
+            - logo
+            - blank
+            - thank_you
+            - happy_holidays
+            - happy_birthday
+          description: >-
+            You can choose a preset card graphic, from thank_you,
+            happy_birthday, happy_holidays, or blank.
+            Otherwise, select logo card (default), and provide a card_image_url
+        radius_template_id:
+          type: integer
+          description:
+            The id of the radius template to use for the content body.
+        merge_variables:
+          type: object
+          properties:
+            key:
+              type: string
+              description: >-
+                Dictionary of key, values for merge variables.
+                Every instance of 'key' in the custom_note body, will be
+                replaced with the value defined here.
+          example:
+            introduction: Hello!
+            business_name: Acme, Inc.
+    
+    subject_list_entry:
+      type: object
+      required:
+        - id
+        - first_name
+        - site_address_line_1
+        - site_city
+        - site_state
+        - site_zipcode
+        - neighborhood
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            Do not provide in POST requests.
+            Unique, sequential id for the radius mailing.
+            This id is automatatically assigned, and not a writeable field.
+        first_name:
+          type: string
+          description: >-
+            The subject of the radius mailing, i.e. "Your Neighbor"
+        site_address_line_1:
+          type: string
+          description: >-
+            Site address, line 1, for the radius mailing.
+        site_address_line_2:
+          type: string
+          description: >-
+            Site address, line 1, for the radius mailing.
+        site_city:
+          type: string
+          description: >-
+            Site city for the radius mailing.
+        site_state:
+          type: string
+          description: >-
+            Site state for the radius mailing.
+        site_zipcode:
+          type: string
+          description: >-
+            Site zipcode for the radius mailing.
+        neighborhood:
+          type: string
+          description: >-
+            Neighborhood name to show on the radius mailing.
