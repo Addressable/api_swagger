@@ -70,7 +70,7 @@ paths:
             support@addressable.app.
     get:
       summary: >-
-        Returns a list of the most recent 100 Custom Notes.
+        Return a list of your Custom Notes
       description: >-
         This endpoint returns a list of the 100 most recently sent custom
         note for the entire account, as an array. Each custom note object
@@ -103,7 +103,7 @@ paths:
   /custom_notes/{id}.json:
     get:
       summary: >-
-        Returns an individal Custom Note, that has already been created, with the id provided in the URL.
+        Returns a Specific Custom Note
       description: >-
         This endpoint returns a custom note for the provided id.
         Each custom note object includes all of the fields that were
@@ -224,7 +224,7 @@ paths:
   /message_templates/{id}.json:
     get:
       summary: >-
-        Returns an individal Message Template with the id provided in the URL.
+        Return a Specific Message Template
       description: >-
         This endpoint returns a message template for the provided id.
         Each message template object includes all of the fields that were
@@ -267,7 +267,7 @@ paths:
             support@addressable.app.
     put:
       summary: >-
-          Updates an individal Message Template with the id provided in the URL.
+          Update a Message Template
       description: >-
         This endpoint updates a message template for the provided id.
         Each message template object can be edited.
@@ -311,7 +311,7 @@ paths:
   /radius_templates.json:
     get:
       summary: >-
-        Lists the saved Radius message templates on the account, along with their ids.
+        List all of your Radius Templates
       description: >-
         Each radius template is assigned a unique sequential integer as an id, that
         can be used to retrieve it individually. The radius template object is
@@ -388,7 +388,7 @@ paths:
   /radius_templates/{id}.json:
     get:
       summary: >-
-        Returns an individal Radius Template with the id provided in the URL.
+        Return a Specific Radius Template
       description: >-
         This endpoint returns a radius template for the provided id.
         Each radius template object includes all of the fields that were
@@ -431,7 +431,7 @@ paths:
             support@addressable.app.
     put:
       summary: >-
-          Updates an individal Radius Template with the id provided in the URL.
+          Update a Radius Template
       description: >-
         This endpoint updates a radius template for the provided id.
         Each radius template object can be edited.
@@ -475,7 +475,7 @@ paths:
   /radius_mailings.json:
     get:
       summary: >-
-        Returns a list of all Radius mailings for the Addressable account.
+        Return a List of all Radius Mailings
       description: >-
         This endpoint returns a list of created and sent radius mailings for
         the entire account, as an array. Each radius mailing object
@@ -531,7 +531,7 @@ paths:
                 subject_list_entry:
                   $ref: '#/components/schemas/subject_list_entry'
       summary: >-
-        Sends a hand written radius mailing to a specified number of recipients!
+        Create and Send a Radius Mailing
       description: >-
         Sending handwritten custom radius mailings can be accomplished with a single
         HTTP Post Request. In general, the minimum information required are
@@ -569,7 +569,7 @@ paths:
   /radius_mailings/{id}.json:
     get:
       summary: >-
-        Returns an individal Radius Mailing with the id provided in the URL.
+        Return a Specific Radius Mailing
       description: >-
         This endpoint returns a Radius Mailing for the provided id.
         Each radius template object includes all of the fields that were
@@ -614,8 +614,7 @@ paths:
             support@addressable.app.
     put:
       summary: >-
-          Updates an individal Radius Mailing, if it has not been wrriten and sent yet,
-          with the id provided in the URL.
+          Updates an individal Radius Mailing
       description: >-
         This endpoint updates a Radius Mailing for the provided id.
         Each radius template object can be edited.
