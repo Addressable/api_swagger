@@ -21,35 +21,6 @@ servers:
       
 paths:
   /custom_notes.json:
-    get:
-      summary: >-
-        Returns a list of the most recent 100 Custom Notes.
-      description: >-
-        This endpoint returns a list of the 100 most recently sent custom
-        note for the entire account, as an array. Each custom note object
-        includes all of the fields that were originally provided, along with
-        a status string.
-      security:
-        - ApiKeyToken: []
-        - ApiKeyEmail: []
-      responses:
-        '200':
-          description: >-
-            Responds with a JSON array of Custom Note Objects. The list of
-            historical custom notes from the entire Addressable account.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/custom_notes'
-        '401':
-          description: >-
-            Unauthorized Request. Please be sure to include the two required
-            Header parmaeters with each request, X-User-Token and X-User-Email
-        '503':
-          description: >-
-            Oops, there is a problem with Addressable's server. Please contact
-            support@addressable.app.
-            
     post:
       requestBody:
         description: >-
@@ -85,6 +56,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/custom_note'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
+    get:
+      summary: >-
+        Returns a list of the most recent 100 Custom Notes.
+      description: >-
+        This endpoint returns a list of the 100 most recently sent custom
+        note for the entire account, as an array. Each custom note object
+        includes all of the fields that were originally provided, along with
+        a status string.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      responses:
+        '200':
+          description: >-
+            Responds with a JSON array of Custom Note Objects. The list of
+            historical custom notes from the entire Addressable account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/custom_notes'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -116,6 +123,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/message_templates'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -154,6 +165,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/custom_note'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -195,6 +210,10 @@ paths:
                 properties:
                   message_template: 
                    $ref: '#/components/schemas/message_template'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -233,6 +252,10 @@ paths:
                 properties:
                   message_template: 
                     $ref: '#/components/schemas/message_template'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
               Unauthorized Request. Please be sure to include the two required
@@ -264,6 +287,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/radius_templates'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -302,6 +329,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/radius_template'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -343,6 +374,10 @@ paths:
                 properties:
                   message_template: 
                    $ref: '#/components/schemas/radius_template'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -381,6 +416,10 @@ paths:
                 properties:
                   message_template: 
                     $ref: '#/components/schemas/radius_template'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
               Unauthorized Request. Please be sure to include the two required
@@ -421,7 +460,10 @@ paths:
                           $ref: '#/components/schemas/radius_mailing'
                         subject_list_entry:
                           $ref: '#/components/schemas/subject_list_entry'
-
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -468,6 +510,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/custom_note'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -511,6 +557,10 @@ paths:
                     $ref: '#/components/schemas/radius_mailing'
                   subject_list_entry:
                     $ref: '#/components/schemas/subject_list_entry'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
             Unauthorized Request. Please be sure to include the two required
@@ -552,6 +602,10 @@ paths:
                     $ref: '#/components/schemas/radius_mailing'
                   subject_list_entry:
                     $ref: '#/components/schemas/subject_list_entry'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
         '401':
           description: >-
               Unauthorized Request. Please be sure to include the two required
