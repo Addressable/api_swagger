@@ -642,6 +642,7 @@ components:
       type: object
       required:
         - id
+        - status
         - body
         - to_first_name
         - to_last_name
@@ -665,6 +666,12 @@ components:
             Do not provide in POST requests.
             Unique, sequential id for the custom note.
             This id is automatatically assigned, and not a writeable field.
+        status:
+          type: integer
+          readOnly: true
+          description: >-
+            ASSIGNED AUTOMATICALLY.
+            The status of the custom note.
         body:
           type: string
           description: >-
