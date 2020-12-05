@@ -100,6 +100,49 @@ paths:
           description: >-
             Oops, there is a problem with Addressable's server. Please contact
             support@addressable.app.
+  /custom_notes/{id}.json:
+    get:
+      summary: >-
+        Returns an individal Custom Note, that has already been created, with the id provided in the URL.
+      description: >-
+        This endpoint returns a custom note for the provided id.
+        Each custom note object includes all of the fields that were
+        originally provided, along with a status string.
+      security:
+        - ApiKeyToken: []
+        - ApiKeyEmail: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: >-
+            The custom note id assigned by Addressable when it was created.
+      responses:
+        '200':
+          description: >-
+            If all required fields are present, and the request is authorized,
+            Addressable will respond with a 200 Status and a JSON body of the custom note.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  custom_note: 
+                   $ref: '#/components/schemas/custom_note'
+        '400':
+          description: >-
+            Bad Request. Please be sure all required fields are supplied and
+            properly formatted.
+        '401':
+          description: >-
+            Unauthorized Request. Please be sure to include the two required
+            Header parmaeters with each request, X-User-Token and X-User-Email
+        '503':
+          description: >-
+            Oops, there is a problem with Addressable's server. Please contact
+            support@addressable.app.
                 
   /message_templates.json:
     get:
@@ -178,14 +221,14 @@ paths:
             Oops, there is a problem with Addressable's server. Please contact
             support@addressable.app.
             
-  /message_templates{id}.json:
+  /message_templates/{id}.json:
     get:
       summary: >-
         Returns an individal Message Template with the id provided in the URL.
       description: >-
         This endpoint returns a message template for the provided id.
         Each message template object includes all of the fields that were
-        originally provided, along with a status string.
+        originally provided.
       security:
         - ApiKeyToken: []
         - ApiKeyEmail: []
@@ -342,7 +385,7 @@ paths:
             Oops, there is a problem with Addressable's server. Please contact
             support@addressable.app.
             
-  /radius_templates{id}.json:
+  /radius_templates/{id}.json:
     get:
       summary: >-
         Returns an individal Radius Template with the id provided in the URL.
