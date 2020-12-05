@@ -34,7 +34,7 @@ paths:
                 custom_note:              
                   $ref: '#/components/schemas/custom_note'
       summary: >-
-        Sends a hand written custom note to the specified recipient!
+        Send a Handwritten Custom Note
       description: >-
         Sending a handwritten custom note can be accomplished with a single
         HTTP Post Request. In general, the minimum information required are
